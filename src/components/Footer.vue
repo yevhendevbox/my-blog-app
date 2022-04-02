@@ -5,7 +5,8 @@
         <div class="left">
           <div class="footer-social">
             <router-link class="header" :to="{ name: 'Home' }"
-              >MyFireBlog</router-link
+              ><img alt="logo" src="../assets/my-logo.jpg" height="50" />
+              <p>YevhenD. blog->folio</p></router-link
             >
             <ul>
               <li>
@@ -37,6 +38,8 @@
               </li>
             </ul>
           </div>
+        </div>
+        <div class="right">
           <div class="footer-links">
             <ul>
               <router-link class="link" :to="{ name: 'Home' }"
@@ -53,8 +56,6 @@
               >
             </ul>
           </div>
-        </div>
-        <div class="right">
           <p>&copy; 2022 All Rights Reserved</p>
         </div>
       </div>
@@ -110,8 +111,33 @@ footer i {
   text-transform: uppercase;
 }
 .header {
-  display: block;
+  display: flex;
+  gap: 1em;
+  align-content: center;
+  align-items: center;
+  justify-content: center;
   font-size: 2rem;
   margin: 0.5em 0;
+}
+.header img {
+  max-width: 50px;
+  border-radius: 50px;
+}
+@media screen and (min-width: 768px) {
+  .footer-wrapper {
+    flex-direction: row;
+  }
+  .right {
+    align-self: flex-end;
+  }
+  .right p {
+    margin-bottom: 0;
+  }
+  .footer-social ul {
+    padding: 0;
+  }
+  .header {
+    margin: 0;
+  }
 }
 </style>

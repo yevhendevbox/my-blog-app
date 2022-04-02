@@ -2,11 +2,8 @@
   <div>
     <Menubar :model="items" class="main-nav justify-content-between">
       <template #start>
-        <img
-          alt="logo"
-          src="https://www.primefaces.org/primevue/img/logo.d32bce0e.svg"
-          height="50"
-        />
+        <img alt="logo" src="../assets/my-logo.jpg" height="50" />
+        <p>YevhenD. blog->folio</p>
       </template>
       <template #item="{ item }">
         <router-link
@@ -69,7 +66,7 @@ export default defineComponent({
 
 <style scoped>
 .main-nav {
-  padding: 0.3em 2em;
+  padding: 0 2em;
   margin-bottom: 2em;
   font-size: 1.6rem;
   font-family: var(--ff-p) !important;
@@ -77,6 +74,7 @@ export default defineComponent({
 }
 .main-nav .p-menubar-start {
   align-self: flex-start;
+  display: flex;
 }
 [role="menubar"] * {
   margin-left: 3em;
@@ -87,5 +85,16 @@ export default defineComponent({
 ::v-deep(.p-menubar-root-list) {
   padding: 2em 0 !important;
   gap: 1em;
+}
+::v-deep(.p-menubar-start) {
+  display: flex;
+  gap: 1em;
+}
+::v-deep(.p-menubar-start p) {
+  text-transform: none;
+}
+.main-nav img {
+  border-radius: 50px;
+  max-width: 50px;
 }
 </style>

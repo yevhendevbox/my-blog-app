@@ -3,6 +3,14 @@ module.exports = {
   env: {
     node: true,
   },
+  settings: {
+    'prettier-vue': {
+      SFCBlocks: {
+        template: true,
+        script: true,
+      },
+    },
+  },
   extends: [
     "plugin:vue/vue3-essential",
     "eslint:recommended",
@@ -11,6 +19,7 @@ module.exports = {
     "@vue/prettier/@typescript-eslint",
   ],
   parserOptions: {
+    parser: '@typescript-eslint/parser',
     ecmaVersion: 2020,
   },
   rules: {
