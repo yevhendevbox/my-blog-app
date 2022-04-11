@@ -8,7 +8,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Home",
     component: Home,
     meta: {
-      title: "Home page",
+      title: "Home",
     },
   },
   {
@@ -17,18 +17,17 @@ const routes: Array<RouteRecordRaw> = [
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue"),
+    component: () => import(/* webpackChunkName: "about" */ "../views/About.vue"),
     meta: {
-      title: "About page",
+      title: "About",
     },
   },
   {
     path: "/blogs",
     name: "Blogs",
-    component: () => import("../views/Blog.vue"),
+    component: () => import("../blogs/view/Blogs.vue"),
     meta: {
-      title: "Blogs page",
+      title: "Blogs",
     },
   },
   {
@@ -36,7 +35,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "CreatePost",
     component: () => import("../views/CreatePost.vue"),
     meta: {
-      title: "Create post page",
+      title: "Create post",
     },
   },
   {
@@ -44,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
     name: "Login",
     component: () => import("../views/Login.vue"),
     meta: {
-      title: "Login page",
+      title: "Login",
     },
   },
 ];
@@ -55,7 +54,7 @@ const router = createRouter({
 });
 
 router.beforeEach((to) => {
-  document.title = `${to.meta.title}`;
+  document.title = `${to.meta.title} | YevhenD`;
 });
 
 export default router;

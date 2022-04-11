@@ -6,11 +6,7 @@
         <p>YevhenD. blog->folio</p>
       </template>
       <template #item="{ item }">
-        <router-link
-          :to="item.to"
-          custom
-          v-slot="{ href, navigate, isActive, isExactActive }"
-        >
+        <router-link :to="item.to" custom v-slot="{ href, navigate, isActive, isExactActive }">
           <a
             :href="href"
             @click="navigate"
@@ -66,7 +62,7 @@ export default defineComponent({
 
 <style scoped>
 .main-nav {
-  padding: 0 2em;
+  padding: 0 1em;
   margin-bottom: 2em;
   font-size: 1.6rem;
   font-family: var(--ff-p) !important;

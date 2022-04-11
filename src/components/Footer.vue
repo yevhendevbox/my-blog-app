@@ -10,31 +10,19 @@
             >
             <ul>
               <li>
-                <a href="https://twitter.com/yevhen_dovhan" target="_blank"
-                  ><i class="pi pi-twitter"></i
-                ></a>
+                <a href="https://twitter.com/yevhen_dovhan" target="_blank"><i class="pi pi-twitter"></i></a>
               </li>
               <li>
-                <a href="https://www.facebook.com/yevhen.dovhan" target="_blank"
-                  ><i class="pi pi-facebook"></i
-                ></a>
+                <a href="https://www.facebook.com/yevhen.dovhan" target="_blank"><i class="pi pi-facebook"></i></a>
               </li>
               <li>
-                <a
-                  href="https://www.linkedin.com/in/yevhen-dovhan/"
-                  target="_blank"
-                  ><i class="pi pi-linkedin"></i
-                ></a>
+                <a href="https://www.linkedin.com/in/yevhen-dovhan/" target="_blank"><i class="pi pi-linkedin"></i></a>
               </li>
               <li>
-                <a href="https://github.com/yevhendevbox" target="_blank"
-                  ><i class="pi pi-github"></i
-                ></a>
+                <a href="https://github.com/yevhendevbox" target="_blank"><i class="pi pi-github"></i></a>
               </li>
               <li>
-                <a href="mailto:dovhan.work@gmail.com" target="_blank"
-                  ><i class="pi pi-google"></i
-                ></a>
+                <a href="mailto:dovhan.work@gmail.com" target="_blank"><i class="pi pi-google"></i></a>
               </li>
             </ul>
           </div>
@@ -42,18 +30,10 @@
         <div class="right">
           <div class="footer-links">
             <ul>
-              <router-link class="link" :to="{ name: 'Home' }"
-                >Home</router-link
-              >
-              <router-link class="link" :to="{ name: 'Blogs' }"
-                >Blogs</router-link
-              >
-              <router-link class="link" :to="{ name: 'CreatePost' }"
-                >Create Post</router-link
-              >
-              <router-link class="link" :to="{ name: 'Login' }"
-                >Login In / Register</router-link
-              >
+              <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+              <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+              <router-link class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
+              <router-link class="link" :to="{ name: 'Login' }">Login In / Register</router-link>
             </ul>
           </div>
           <p>&copy; 2022 All Rights Reserved</p>
