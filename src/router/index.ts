@@ -33,7 +33,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/create-post",
     name: "CreatePost",
-    component: () => import("../views/CreatePost.vue"),
+    component: () => import("../create_post/view/CreatePost.vue"),
     meta: {
       title: "Create post",
     },
@@ -41,9 +41,25 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/login",
     name: "Login",
-    component: () => import("../views/Login.vue"),
+    component: () => import("../login/view/Login.vue"),
     meta: {
       title: "Login",
+    },
+  },
+  {
+    path: "/register",
+    name: "Register",
+    component: () => import("../register/view/Register.vue"),
+    meta: {
+      title: "Register",
+    },
+  },
+  {
+    path: "/forgot-password",
+    name: "ForgotPassword",
+    component: () => import("../forgot_password/view/ForgotPassword.vue"),
+    meta: {
+      title: "Forget password",
     },
   },
 ];

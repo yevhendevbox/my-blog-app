@@ -8,7 +8,7 @@
       </div>
       <div class="hero-content">
         <p class="hero-text">{{ heroSection.heroContent }}</p>
-        <MainButton>Register now ></MainButton>
+        <MainButton @click="$router.push('/login')">Register now ></MainButton>
       </div>
     </section>
     <section class="latest-posts">

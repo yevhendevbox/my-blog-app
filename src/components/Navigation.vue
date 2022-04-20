@@ -19,7 +19,6 @@
         </router-link>
       </template>
     </Menubar>
-    <router-view />
   </div>
 </template>
 

@@ -1,5 +1,5 @@
 <template>
-  <button class="custom-button" @click="$router.push('/login')">
+  <button class="custom-button">
     <span>
       <slot></slot>
     </span>
