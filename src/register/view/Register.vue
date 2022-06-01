@@ -6,7 +6,7 @@
         <router-link class="router-link" :to="{ name: 'Login' }">Login</router-link>
       </p>
       <h2>Create your account</h2>
-      <div class="login-controls">
+      <div class="register-controls">
         <div class="p-inputgroup">
           <span class="p-inputgroup-addon">
             <i class="pi pi-user"></i>
@@ -35,20 +35,24 @@
           <span class="p-inputgroup-addon">
             <i class="pi pi-lock"></i>
           </span>
-          <Password v-model="userData.password" class="p-inputtext-lg"></Password>
+          <Password placeholder="Password" v-model="userData.password" class="p-inputtext-lg"></Password>
         </div>
+        <p class="error" v-show="error">{{ errorMsg }}</p>
       </div>
 
-      <MainButton>Sign up</MainButton>
+      <MainButton @click.prevent="register">Sign up</MainButton>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import MainButton from "@/components/MainButton.vue";
+import { useRouter } from "vue-router";
+
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 export default defineComponent({
   name: "Register",
@@ -65,8 +69,37 @@ export default defineComponent({
       email: "",
       password: "",
     });
+    const error = ref(false);
+    const errorMsg = ref("");
+    const router = useRouter();
+
+    const register = () => {
+      if (userData.firstName !== "" && userData.lastName !== "" && userData.userName !== "" && userData.email !== "" && userData.password !== "") {
+        error.value = false;
+        errorMsg.value = "";
+        const firebaseAuth = getAuth();
+        createUserWithEmailAndPassword(firebaseAuth, userData.email, userData.password)
+          .then((data) => {
+            console.log(firebaseAuth.currentUser);
+            router.push({ name: "Home" });
+          })
+          .catch((error) => {
+            console.log(error.code, error.message);
+          });
+        // console.log("Every thing is filled up...");
+        return;
+      }
+      error.value = !error.value;
+      errorMsg.value = "Please fill out all the fields!";
+      return;
+    };
+
     return {
+      error,
+      errorMsg,
       userData,
+      register,
+      router,
     };
   },
 });

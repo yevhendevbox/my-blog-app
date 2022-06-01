@@ -17,11 +17,11 @@
           <span class="p-inputgroup-addon">
             <i class="pi pi-lock"></i>
           </span>
-          <Password v-model="password" class="p-inputtext-lg"></Password>
+          <Password placeholder="Password" v-model="password" class="p-inputtext-lg"></Password>
         </div>
       </div>
       <router-link class="forgot-password" :to="{ name: 'ForgotPassword' }">Forgot your password?</router-link>
-      <MainButton>Sign in</MainButton>
+      <MainButton @click.prevent="signIn">Sign in</MainButton>
     </form>
   </div>
 </template>
@@ -32,6 +32,10 @@ import InputText from "primevue/inputtext";
 import Password from "primevue/password";
 import MainButton from "@/components/MainButton.vue";
 
+// import firebase from "firebase/";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "vue-router";
+
 export default defineComponent({
   name: "Login",
   components: {
@@ -40,11 +44,37 @@ export default defineComponent({
     MainButton,
   },
   setup() {
-    const password = ref();
-    const email = ref();
+    const password = ref("");
+    const email = ref("");
+    const error = ref(false);
+    const errorMsg = ref("");
+    const router = useRouter();
+
+    const signIn = (): void => {
+      if (email.value !== "" && password.value !== "") {
+        error.value = false;
+        errorMsg.value = "";
+        signInWithEmailAndPassword(getAuth(), email.value, password.value)
+          .then((data) => {
+            console.log("Succesfully signed!");
+            router.push({ name: "Home" });
+          })
+          .catch((error) => {
+            console.log(error.message);
+          });
+        return;
+      }
+      error.value = !error.value;
+      errorMsg.value = "Please fill out all the fields!";
+      return;
+    };
+
     return {
       password,
       email,
+      error,
+      errorMsg,
+      signIn,
     };
   },
 });
