@@ -85,8 +85,7 @@ h1 {
   font-size: 20rem;
 }
 
-h1::before,
-.active-link::before {
+h1::before{
   z-index: -1;
   content: '';
   position: absolute;

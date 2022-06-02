@@ -1,60 +1,68 @@
 <template>
-  <div>
-    <Menubar :model="items" class="main-nav justify-content-between">
-      <template #start>
-        <img alt="logo" src="../assets/my-logo.jpg" height="50" />
-        <p>YevhenD. blog->folio</p>
-      </template>
-      <template #item="{ item }">
-        <router-link :to="item.to" custom v-slot="{ href, navigate, isActive, isExactActive }">
-          <a
-            :href="href"
-            @click="navigate"
-            :class="{
-              'active-link': isActive,
-              'active-link-exact': isExactActive,
-            }"
-            >{{ item.label }}</a
-          >
-        </router-link>
-      </template>
-    </Menubar>
-  </div>
+  <header class="header">
+    <div class="header__logo">
+      <img alt="logo" src="../assets/my-logo.jpg" height="50" />
+      <p>YevhenD. blog->folio</p>
+    </div>
+    <div class="header__links">
+      <ul>
+        <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
+        <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
+        <router-link class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
+        <router-link class="link" :to="{ name: 'Login' }" v-if="!isLoggedIn">Login In / Register</router-link>
+        <a v-else>
+          <Button label="Info" type="button" class="p-button-rounded p-button-help p-button-sm" @click="handleSignOut">
+            <Avatar icon="pi pi-user" class="p-mr-2" style="background-color: #ffffff; color: #609af8" shape="circle" />
+            <span class="p-ml-2 p-text-bold"></span>
+          </Button>
+        </a>
+      </ul>
+    </div>
+  </header>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from "vue";
-import Menubar from "primevue/menubar";
+import { defineComponent, onMounted, ref } from "vue";
+// import Menubar from "primevue/menubar";
+import Avatar from "primevue/avatar";
+import Button from "primevue/button";
+
+import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
-    Menubar,
+    // Menubar,
+    Button,
+    Avatar,
   },
   setup() {
-    const items = ref([
-      {
-        label: "Home",
-        to: "/",
-      },
-      {
-        label: "About",
-        to: "/about",
-      },
-      {
-        label: "Blogs",
-        to: "/blogs",
-      },
-      {
-        label: "Create post",
-        to: "/create-post",
-      },
-      {
-        label: "Login",
-        to: "/login",
-      },
-    ]);
+    const isLoggedIn = ref(false);
+    let auth: any;
 
-    return { items };
+    const router = useRouter();
+
+    onMounted(() => {
+      auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          isLoggedIn.value = true;
+        } else {
+          isLoggedIn.value = false;
+        }
+      });
+    });
+
+    const handleSignOut = () => {
+      signOut(auth)
+        .then(() => {
+          router.push({ name: "Home" });
+        })
+        .catch((error) => {
+          console.log(error.code, error.message);
+        });
+    };
+    return { isLoggedIn, handleSignOut };
   },
 });
 </script>
@@ -67,29 +75,45 @@ export default defineComponent({
   font-family: var(--ff-p) !important;
   text-transform: uppercase;
 }
-.main-nav .p-menubar-start {
-  align-self: flex-start;
+.header {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--white);
+
+  padding: 1em;
+  box-shadow: -2px -5px 10px 2px rgba(0, 0, 0, 0.28);
 }
-[role="menubar"] * {
-  margin-left: 3em;
-}
-::v-deep(.p-menubar-button i) {
-  font-size: 1.8rem;
-}
-::v-deep(.p-menubar-root-list) {
-  padding: 2em 0 !important;
-  gap: 1em;
-}
-::v-deep(.p-menubar-start) {
+.header__logo {
   display: flex;
-  gap: 1em;
+  align-items: center;
 }
-::v-deep(.p-menubar-start p) {
-  text-transform: none;
-}
-.main-nav img {
+.header__logo img {
   border-radius: 50px;
   max-width: 50px;
+}
+.header__links {
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+.header__links a {
+  line-height: 1.8;
+  position: relative;
+  z-index: 0;
+}
+.header__links ul a + a {
+  margin-left: 2em;
+}
+.router-link-active::before {
+  z-index: -1;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -0.5rem;
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background-color: var(--accent);
+  transform: rotate(118deg);
 }
 </style>

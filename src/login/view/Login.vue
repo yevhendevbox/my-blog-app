@@ -60,7 +60,20 @@ export default defineComponent({
             router.push({ name: "Home" });
           })
           .catch((error) => {
-            console.log(error.message);
+            console.log(error.code);
+            switch (error.code) {
+              case "auth/invalid-email":
+                errorMsg.value = "Invalid email";
+                break;
+              case "auth/user-not-found":
+                errorMsg.value = "No account with this email was found";
+                break;
+              case "auth/wrong-password":
+                errorMsg.value = "Incorrect password";
+                break;
+              default:
+                errorMsg.value = "Email or password was incorrect";
+            }
           });
         return;
       }

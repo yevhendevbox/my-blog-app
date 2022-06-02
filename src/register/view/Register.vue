@@ -81,7 +81,7 @@ export default defineComponent({
         createUserWithEmailAndPassword(firebaseAuth, userData.email, userData.password)
           .then((data) => {
             console.log(firebaseAuth.currentUser);
-            router.push({ name: "Home" });
+            router.push({ name: "CreatePost" });
           })
           .catch((error) => {
             console.log(error.code, error.message);
