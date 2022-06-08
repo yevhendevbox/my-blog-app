@@ -8,12 +8,13 @@
       <ul>
         <router-link class="link" :to="{ name: 'Home' }">Home</router-link>
         <router-link class="link" :to="{ name: 'Blogs' }">Blogs</router-link>
-        <router-link class="link" :to="{ name: 'CreatePost' }">Create Post</router-link>
+        <router-link class="link" :to="{ name: 'About' }">About</router-link>
+        <router-link class="link" :to="{ name: 'CreatePost' }" v-if="isLoggedIn">Create Post</router-link>
         <router-link class="link" :to="{ name: 'Login' }" v-if="!isLoggedIn">Login In / Register</router-link>
         <a v-else>
-          <Button label="Info" type="button" class="p-button-rounded p-button-help p-button-sm" @click="handleSignOut">
+          <Button label="Info" type="button" class="p-button-rounded p-button-help p-button-sm user-btn" @click="handleSignOut">
             <Avatar icon="pi pi-user" class="p-mr-2" style="background-color: #ffffff; color: #609af8" shape="circle" />
-            <span class="p-ml-2 p-text-bold"></span>
+            <span class="p-ml-2 p-text-bold user-info">{{ loggedUser }}</span>
           </Button>
         </a>
       </ul>
@@ -23,23 +24,23 @@
 
 <script lang="ts">
 import { defineComponent, onMounted, ref } from "vue";
-// import Menubar from "primevue/menubar";
 import Avatar from "primevue/avatar";
 import Button from "primevue/button";
 
+import { db } from "@/firebase/firebaseConfig";
+import { doc, getDoc } from "firebase/firestore";
 import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
 import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: {
-    // Menubar,
     Button,
     Avatar,
   },
   setup() {
     const isLoggedIn = ref(false);
     let auth: any;
-
+    const loggedUser = ref("");
     const router = useRouter();
 
     onMounted(() => {
@@ -47,13 +48,25 @@ export default defineComponent({
       onAuthStateChanged(auth, (user) => {
         if (user) {
           isLoggedIn.value = true;
+          const getUser = async () => {
+            const ref = doc(db, "users", user?.uid);
+            const userDoc = await getDoc(ref);
+
+            if (userDoc.exists()) {
+              const { userName } = userDoc.data();
+              loggedUser.value = userName;
+            } else {
+              console.log("No such document!");
+            }
+          };
+          getUser();
         } else {
           isLoggedIn.value = false;
         }
       });
     });
 
-    const handleSignOut = () => {
+    const handleSignOut = (): void => {
       signOut(auth)
         .then(() => {
           router.push({ name: "Home" });
@@ -62,7 +75,7 @@ export default defineComponent({
           console.log(error.code, error.message);
         });
     };
-    return { isLoggedIn, handleSignOut };
+    return { isLoggedIn, handleSignOut, loggedUser };
   },
 });
 </script>
@@ -72,7 +85,6 @@ export default defineComponent({
   padding: 0 1em;
   margin-bottom: 2em;
   font-size: 1.6rem;
-  font-family: var(--ff-p) !important;
   text-transform: uppercase;
 }
 .header {
@@ -81,7 +93,7 @@ export default defineComponent({
   justify-content: space-between;
   background-color: var(--white);
 
-  padding: 1em;
+  padding: 0 1em;
   box-shadow: -2px -5px 10px 2px rgba(0, 0, 0, 0.28);
 }
 .header__logo {
@@ -94,10 +106,11 @@ export default defineComponent({
 }
 .header__links {
   text-transform: uppercase;
+  font-family: var(--ff-p);
   font-size: 1.5rem;
 }
 .header__links a {
-  line-height: 1.8;
+  line-height: 2.1;
   position: relative;
   z-index: 0;
 }
@@ -115,5 +128,13 @@ export default defineComponent({
   height: 10px;
   background-color: var(--accent);
   transform: rotate(118deg);
+}
+.user-info {
+  display: inline-block;
+  margin-left: 1em;
+  font-size: 1.2rem;
+}
+.user-btn {
+  padding: 1em !important;
 }
 </style>

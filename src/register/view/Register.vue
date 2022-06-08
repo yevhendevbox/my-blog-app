@@ -53,6 +53,8 @@ import MainButton from "@/components/MainButton.vue";
 import { useRouter } from "vue-router";
 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { db } from "@/firebase/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 export default defineComponent({
   name: "Register",
@@ -80,13 +82,18 @@ export default defineComponent({
         const firebaseAuth = getAuth();
         createUserWithEmailAndPassword(firebaseAuth, userData.email, userData.password)
           .then((data) => {
-            console.log(firebaseAuth.currentUser);
+            setDoc(doc(db, "users", data.user.uid), {
+              email: userData.email,
+              password: userData.password,
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              userName: userData.userName,
+            });
             router.push({ name: "CreatePost" });
           })
           .catch((error) => {
             console.log(error.code, error.message);
           });
-        // console.log("Every thing is filled up...");
         return;
       }
       error.value = !error.value;

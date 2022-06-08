@@ -56,7 +56,6 @@ export default defineComponent({
         errorMsg.value = "";
         signInWithEmailAndPassword(getAuth(), email.value, password.value)
           .then((data) => {
-            console.log("Succesfully signed!");
             router.push({ name: "Home" });
           })
           .catch((error) => {

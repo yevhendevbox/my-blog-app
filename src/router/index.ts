@@ -1,5 +1,6 @@
 // import { setBlockTracking } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Home from "../views/Home.vue";
 
 const routes: Array<RouteRecordRaw> = [
@@ -36,6 +37,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("../create_post/view/CreatePost.vue"),
     meta: {
       title: "Create post",
+      requireAuth: true,
     },
   },
   {
@@ -69,8 +71,31 @@ const router = createRouter({
   routes,
 });
 
-router.beforeEach((to) => {
+const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const removeListener = onAuthStateChanged(
+      getAuth(),
+      (user) => {
+        removeListener();
+        resolve(user);
+      },
+      reject
+    );
+  });
+};
+
+router.beforeEach(async (to, from, next) => {
   document.title = `${to.meta.title} | YevhenD`;
+  if (to.matched.some((record) => record.meta.requireAuth)) {
+    if (await getCurrentUser()) {
+      next();
+    } else {
+      console.log("You don't have acces!");
+      next("/");
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;
